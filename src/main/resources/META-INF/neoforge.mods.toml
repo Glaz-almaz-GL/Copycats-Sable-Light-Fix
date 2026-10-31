@@ -1,0 +1,47 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "copycats_sable_light_fix"
+version = "1.0.0"
+displayName = "Copycats Sable Light Fix"
+description = '''
+Fixes incorrect smooth lighting (ambient occlusion) for Copycat blocks
+(Extra Copycats and Create copycats) when rendered inside Sable sub-levels.
+AO is disabled only for copycat models; all other blocks keep normal lighting.
+'''
+logoFile = "icon.png"
+authors = "Glaz_almaz_GL"
+configRequire = "CLIENT"
+
+[[mixins]]
+config = "copycats_sable_light_fix.mixins.json"
+
+[[dependencies."copycats_sable_light_fix"]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies."copycats_sable_light_fix"]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies."copycats_sable_light_fix"]]
+modId = "sable"
+type = "required"
+versionRange = "[2.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies."copycats_sable_light_fix"]]
+modId = "extra_copycats"
+type = "required"
+versionRange = "[1.0,)"
+ordering = "AFTER"
+side = "CLIENT"
