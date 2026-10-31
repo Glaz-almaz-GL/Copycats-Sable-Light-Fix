@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.fiisadev'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+def jdk21 = 'C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-21.0.13.9-hotspot'
+def metaLibs = new File(System.getenv('APPDATA'), 'ModrinthApp/meta/libraries')
+
+def neoforgeClientJar = new File(metaLibs, 'net/neoforged/neoforge/21.1.262/neoforge-21.1.262-client.jar')
+def neoforgeUniversalJar = new File(metaLibs, 'net/neoforged/neoforge/21.1.262/neoforge-21.1.262-universal.jar')
+def mixinJar = new File(metaLibs, 'net/fabricmc/sponge-mixin/0.17.4+mixin.0.8.7/sponge-mixin-0.17.4+mixin.0.8.7.jar')
+def minecraftSRGJar = new File(metaLibs, 'net/minecraft/client/1.21.1-20240808.144430/client-1.21.1-20240808.144430-srg.jar')
+def busJar = new File(metaLibs, 'net/neoforged/bus/8.0.5/bus-8.0.5.jar')
+def loaderJar = new File(metaLibs, 'net/neoforged/fancymodloader/loader/4.0.45/loader-4.0.45.jar')
+def log4jJar = new File(metaLibs, 'org/apache/logging/log4j/log4j-api/2.26.0/log4j-api-2.26.0.jar')
+
+def createJar = new File(System.getenv('APPDATA'), 'ModrinthApp/profiles/Create AmongUs/mods/create-1.21.1-6.0.10.jar')
+def extraCopycatsJar = new File(System.getenv('APPDATA'), 'ModrinthApp/profiles/Create AmongUs/mods/extra_copycats-1.0.2.jar')
+
+println "Classpath JARs:"
+println "  NeoForge Client: ${neoforgeClientJar.exists() ? neoforgeClientJar.absolutePath : 'NOT FOUND'}"
+println "  NeoForge Universal: ${neoforgeUniversalJar.exists() ? neoforgeUniversalJar.absolutePath : 'NOT FOUND'}"
+println "  Mixin: ${mixinJar.exists() ? mixinJar.absolutePath : 'NOT FOUND'}"
+println "  Minecraft SRG: ${minecraftSRGJar.exists() ? minecraftSRGJar.absolutePath : 'NOT FOUND'}"
+println "  Create: ${createJar.exists() ? createJar.absolutePath : 'NOT FOUND'}"
+println "  Extra Copycats: ${extraCopycatsJar.exists() ? extraCopycatsJar.absolutePath : 'NOT FOUND'}"
+
+dependencies {
+    compileOnly files(neoforgeClientJar, neoforgeUniversalJar, mixinJar, minecraftSRGJar, createJar, extraCopycatsJar, busJar, loaderJar, log4jJar)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.javaHome = file(jdk21)
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+jar {
+    archiveBaseName = 'copycats_sable_light_fix'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    from sourceSets.main.output
+    from('src/main/resources') {
+        include '**/*'
+    }
+    
+    manifest {
+        attributes(
+            'MixinConfigs': 'copycats_sable_light_fix.mixins.json',
+            'Implementation-Title': 'Copycats Sable Light Fix',
+            'Implementation-Version': version
+        )
+    }
+}
