@@ -16,7 +16,7 @@ Without the fix, copycat blocks appear noticeably darker and visually inconsiste
 
 | Before (broken AO) | After (fixed AO) |
 |:---|:---|
-| ![Before](screenshots/before.png) | ![After](screenshots/after.png) |
+| <img src="screenshots/before.png" width="854" height="480"> | <img src="screenshots/after.png" width="854" height="480"> |
 
 ## How it works
 
